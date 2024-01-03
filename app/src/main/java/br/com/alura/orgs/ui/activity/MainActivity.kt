@@ -1,15 +1,14 @@
-package br.com.alura.orgs.activity
+package br.com.alura.orgs.ui.activity
 
-import android.app.Activity
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
 import br.com.alura.orgs.models.Produto
 import br.com.alura.orgs.recyclerview.adapter.ListaProdutosAdapter
 import java.math.BigDecimal
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
