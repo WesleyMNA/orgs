@@ -13,27 +13,36 @@ class FormularioProdutoActivity : AppCompatActivity(R.layout.activity_formulario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        configurarBotaoSalvar()
+    }
+
+    private fun configurarBotaoSalvar() {
         val botaoSalvar = findViewById<Button>(R.id.botao_salvar)
+        val dao = ProdutoDao()
         botaoSalvar.setOnClickListener {
-            val campoNome = findViewById<EditText>(R.id.nome)
-            val nome = campoNome.text.toString()
-            val campoDescricao = findViewById<EditText>(R.id.descricao)
-            val descricao = campoDescricao.text.toString()
-            val campoValor = findViewById<EditText>(R.id.valor)
-            val valorTexto = campoValor.text.toString()
-
-            val valor = if (valorTexto.isBlank())
-                BigDecimal.ZERO
-            else
-                BigDecimal(valorTexto)
-
-            val produto = Produto(
-                nome = nome,
-                descricao = descricao,
-                valor = valor
-            )
-            ProdutoDao().adicionar(produto)
+            val produto = criarProduto()
+            dao.adicionar(produto)
             finish()
         }
+    }
+
+    private fun criarProduto(): Produto {
+        val campoNome = findViewById<EditText>(R.id.activity_formulario_produto_nome)
+        val nome = campoNome.text.toString()
+        val campoDescricao = findViewById<EditText>(R.id.activity_formulario_produto_descricao)
+        val descricao = campoDescricao.text.toString()
+        val campoValor = findViewById<EditText>(R.id.activity_formulario_produto_valor)
+        val valorTexto = campoValor.text.toString()
+
+        val valor = if (valorTexto.isBlank())
+            BigDecimal.ZERO
+        else
+            BigDecimal(valorTexto)
+
+        return Produto(
+            nome = nome,
+            descricao = descricao,
+            valor = valor
+        )
     }
 }
