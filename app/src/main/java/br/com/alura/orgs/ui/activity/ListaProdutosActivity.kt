@@ -19,10 +19,6 @@ class ListaProdutosActivity : AppCompatActivity(R.layout.activity_lista_produtos
         super.onCreate(savedInstanceState)
         configuraRecyclerView()
         configuraFab()
-        AlertDialog.Builder(this)
-            .setMessage("")
-            .setView(R.layout.formulario_imagem)
-            .show()
     }
 
     override fun onResume() {
