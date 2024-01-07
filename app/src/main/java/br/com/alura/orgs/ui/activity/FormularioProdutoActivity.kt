@@ -1,7 +1,6 @@
 package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -10,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.orgs.R
 import br.com.alura.orgs.dao.ProdutoDao
 import br.com.alura.orgs.databinding.ActivityFormularioProdutoBinding
+import br.com.alura.orgs.databinding.FormularioImagemBinding
 import br.com.alura.orgs.models.Produto
+import coil.load
 import java.math.BigDecimal
 
 class FormularioProdutoActivity : AppCompatActivity(R.layout.activity_formulario_produto) {
@@ -18,14 +19,25 @@ class FormularioProdutoActivity : AppCompatActivity(R.layout.activity_formulario
     private val binding by lazy {
         ActivityFormularioProdutoBinding.inflate(layoutInflater)
     }
+    private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         configurarBotaoSalvar()
         val imagem = findViewById<ImageView>(R.id.activity_formulario_imagem)
         imagem.setOnClickListener {
+            val formularioImagemBinding = FormularioImagemBinding.inflate(layoutInflater)
+            formularioImagemBinding.formularioImagemBotaoCarregar.setOnClickListener {
+                val url = formularioImagemBinding.fomularioImageUrl.text.toString()
+                formularioImagemBinding.formularioImagemImageview.load(url)
+            }
             AlertDialog.Builder(this)
-                .setView(R.layout.formulario_imagem)
+                .setView(formularioImagemBinding.root)
+                .setPositiveButton("Confirmar") {_, _ ->
+                    url = formularioImagemBinding.fomularioImageUrl.text.toString()
+                    binding.activityFormularioImagem.load(url)
+                }
+                .setNegativeButton("Cancelar") {_, _ ->}
                 .show()
         }
     }
@@ -56,7 +68,8 @@ class FormularioProdutoActivity : AppCompatActivity(R.layout.activity_formulario
         return Produto(
             nome = nome,
             descricao = descricao,
-            valor = valor
+            valor = valor,
+            imagem = url
         )
     }
 }

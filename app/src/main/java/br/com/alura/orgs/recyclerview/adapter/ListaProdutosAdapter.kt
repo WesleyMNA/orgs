@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
 import br.com.alura.orgs.models.Produto
+import coil.load
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -27,6 +29,8 @@ class ListaProdutosAdapter(
             val valor = itemView.findViewById<TextView>(R.id.produto_item_valor)
             val formatador = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
             valor.text = formatador.format(produto.valor)
+            val imagem = itemView.findViewById<ImageView>(R.id.produto_item_imagem)
+             imagem.load(produto.imagem)
         }
     }
 

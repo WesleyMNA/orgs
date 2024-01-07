@@ -18,7 +18,8 @@ class ProdutoDao {
             Produto(
                 "Salada de frutas",
                 "Laranja, maçãs e uva",
-                BigDecimal("19.99")
+                BigDecimal("19.99"),
+                "https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg"
             )
         )
     }
