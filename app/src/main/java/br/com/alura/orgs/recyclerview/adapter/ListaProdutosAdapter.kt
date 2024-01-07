@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
 import br.com.alura.orgs.models.Produto
+import java.text.NumberFormat
+import java.util.Locale
 
 class ListaProdutosAdapter(
     private val context: Context,
@@ -23,7 +25,8 @@ class ListaProdutosAdapter(
             val descricao = itemView.findViewById<TextView>(R.id.produto_item_descricao)
             descricao.text = produto.descricao
             val valor = itemView.findViewById<TextView>(R.id.produto_item_valor)
-            valor.text = produto.valor.toPlainString()
+            val formatador = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
+            valor.text = formatador.format(produto.valor)
         }
     }
 
