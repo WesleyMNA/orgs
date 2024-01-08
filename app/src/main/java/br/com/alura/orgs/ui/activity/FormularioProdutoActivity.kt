@@ -18,19 +18,17 @@ import java.math.BigDecimal
 
 class FormularioProdutoActivity : AppCompatActivity(R.layout.activity_formulario_produto) {
 
-    private val binding by lazy {
-        ActivityFormularioProdutoBinding.inflate(layoutInflater)
-    }
     private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         configurarBotaoSalvar()
+        title = "Cadastrar produto"
         val imagem = findViewById<ImageView>(R.id.activity_formulario_imagem)
         imagem.setOnClickListener {
             FormularioImagemDialog(this).show(url) {urlLoaded ->
                 url = urlLoaded
-                binding.activityFormularioImagem.carregarImagem(url)
+                imagem.carregarImagem(url)
             }
         }
     }
