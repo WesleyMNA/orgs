@@ -12,6 +12,7 @@ import br.com.alura.orgs.databinding.ActivityFormularioProdutoBinding
 import br.com.alura.orgs.databinding.FormularioImagemBinding
 import br.com.alura.orgs.extensions.carregarImagem
 import br.com.alura.orgs.models.Produto
+import br.com.alura.orgs.ui.dialog.FormularioImagemDialog
 import coil.load
 import java.math.BigDecimal
 
@@ -27,19 +28,10 @@ class FormularioProdutoActivity : AppCompatActivity(R.layout.activity_formulario
         configurarBotaoSalvar()
         val imagem = findViewById<ImageView>(R.id.activity_formulario_imagem)
         imagem.setOnClickListener {
-            val formularioImagemBinding = FormularioImagemBinding.inflate(layoutInflater)
-            formularioImagemBinding.formularioImagemBotaoCarregar.setOnClickListener {
-                val url = formularioImagemBinding.fomularioImageUrl.text.toString()
-                formularioImagemBinding.formularioImagemImageview.carregarImagem(url)
+            FormularioImagemDialog(this).show {urlLoaded ->
+                url = urlLoaded
+                binding.activityFormularioImagem.carregarImagem(url)
             }
-            AlertDialog.Builder(this)
-                .setView(formularioImagemBinding.root)
-                .setPositiveButton("Confirmar") {_, _ ->
-                    url = formularioImagemBinding.fomularioImageUrl.text.toString()
-                    binding.activityFormularioImagem.carregarImagem(url)
-                }
-                .setNegativeButton("Cancelar") {_, _ ->}
-                .show()
         }
     }
 
