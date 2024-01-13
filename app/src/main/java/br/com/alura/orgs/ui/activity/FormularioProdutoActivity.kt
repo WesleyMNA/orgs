@@ -16,25 +16,29 @@ import br.com.alura.orgs.ui.dialog.FormularioImagemDialog
 import coil.load
 import java.math.BigDecimal
 
-class FormularioProdutoActivity : AppCompatActivity(R.layout.activity_formulario_produto) {
+class FormularioProdutoActivity : AppCompatActivity() {
 
     private var url: String? = null
+    private val binding by lazy {
+        ActivityFormularioProdutoBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         configurarBotaoSalvar()
         title = "Cadastrar produto"
-        val imagem = findViewById<ImageView>(R.id.activity_formulario_imagem)
+        val imagem = binding.activityFormularioImagem
         imagem.setOnClickListener {
-            FormularioImagemDialog(this).show(url) {urlLoaded ->
+            FormularioImagemDialog(this).show(url) { urlLoaded ->
                 url = urlLoaded
                 imagem.carregarImagem(url)
             }
         }
+        setContentView(binding.root)
     }
 
     private fun configurarBotaoSalvar() {
-        val botaoSalvar = findViewById<Button>(R.id.botao_salvar)
+        val botaoSalvar = binding.botaoSalvar
         val dao = ProdutoDao()
         botaoSalvar.setOnClickListener {
             val produto = criarProduto()
@@ -44,11 +48,11 @@ class FormularioProdutoActivity : AppCompatActivity(R.layout.activity_formulario
     }
 
     private fun criarProduto(): Produto {
-        val campoNome = findViewById<EditText>(R.id.activity_formulario_produto_nome)
+        val campoNome = binding.activityFormularioProdutoNome
         val nome = campoNome.text.toString()
-        val campoDescricao = findViewById<EditText>(R.id.activity_formulario_produto_descricao)
+        val campoDescricao = binding.activityFormularioProdutoDescricao
         val descricao = campoDescricao.text.toString()
-        val campoValor = findViewById<EditText>(R.id.activity_formulario_produto_valor)
+        val campoValor = binding.activityFormularioProdutoValor
         val valorTexto = campoValor.text.toString()
 
         val valor = if (valorTexto.isBlank())
