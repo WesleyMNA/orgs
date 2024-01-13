@@ -41,12 +41,12 @@ class ListaProdutosAdapter(
             val formatador = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
             val valor = binding.produtoItemValor
             valor.text = formatador.format(produto.valor)
+            val imagem = binding.produtoItemImagem
 
             if (produto.imagem == null)
-                itemView.visibility = View.GONE
-
-            val imagem = binding.produtoItemImagem
-            imagem.carregarImagem(produto.imagem)
+                imagem.visibility = View.GONE
+            else
+                imagem.carregarImagem(produto.imagem)
         }
     }
 
