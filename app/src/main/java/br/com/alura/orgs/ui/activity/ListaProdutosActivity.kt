@@ -2,10 +2,11 @@ package br.com.alura.orgs.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import br.com.alura.orgs.dao.ProdutoDao
 import br.com.alura.orgs.databinding.ActivityListaProdutosBinding
+import br.com.alura.orgs.db.config.AppDatabase
 import br.com.alura.orgs.recyclerview.adapter.ListaProdutosAdapter
 
 class ListaProdutosActivity : AppCompatActivity() {
@@ -20,6 +21,10 @@ class ListaProdutosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         configuraRecyclerView()
         configuraFab()
+        val db = Room
+            .databaseBuilder(this, AppDatabase::class.java, "orgs.db")
+            .allowMainThreadQueries()
+            .build()
         setContentView(binding.root)
     }
 

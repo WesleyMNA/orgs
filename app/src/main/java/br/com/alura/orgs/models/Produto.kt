@@ -1,13 +1,18 @@
 package br.com.alura.orgs.models
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 
+@Entity
 @Parcelize
 data class Produto(
-    val nome: String,
-    val descricao: String,
-    val valor: BigDecimal,
-    val imagem: String? = null
+    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
+    @ColumnInfo(name = "nome") val nome: String,
+    @ColumnInfo(name = "descricao") val descricao: String,
+    @ColumnInfo(name = "valor") val valor: BigDecimal,
+    @ColumnInfo(name = "imagem") val imagem: String? = null
 ) : Parcelable
