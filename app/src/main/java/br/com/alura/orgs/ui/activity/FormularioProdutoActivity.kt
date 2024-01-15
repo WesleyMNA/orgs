@@ -2,8 +2,8 @@ package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import br.com.alura.orgs.dao.ProdutoDao
 import br.com.alura.orgs.databinding.ActivityFormularioProdutoBinding
+import br.com.alura.orgs.db.config.AppDatabase
 import br.com.alura.orgs.extensions.carregarImagem
 import br.com.alura.orgs.models.Produto
 import br.com.alura.orgs.ui.dialog.FormularioImagemDialog
@@ -32,10 +32,11 @@ class FormularioProdutoActivity : AppCompatActivity() {
 
     private fun configurarBotaoSalvar() {
         val botaoSalvar = binding.botaoSalvar
-        val dao = ProdutoDao()
+        val db = AppDatabase.getInstance(this)
+        val dao = db.produtoDao()
         botaoSalvar.setOnClickListener {
             val produto = criarProduto()
-            dao.adicionar(produto)
+            dao.salva(produto)
             finish()
         }
     }

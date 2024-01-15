@@ -3,16 +3,13 @@ package br.com.alura.orgs.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
-import br.com.alura.orgs.dao.ProdutoDao
 import br.com.alura.orgs.databinding.ActivityListaProdutosBinding
 import br.com.alura.orgs.db.config.AppDatabase
 import br.com.alura.orgs.recyclerview.adapter.ListaProdutosAdapter
 
 class ListaProdutosActivity : AppCompatActivity() {
 
-    private val dao = ProdutoDao()
-    private val adapter = ListaProdutosAdapter(this, dao.buscarTodos())
+    private val adapter = ListaProdutosAdapter(this)
     private val binding by lazy {
         ActivityListaProdutosBinding.inflate(layoutInflater)
     }
@@ -21,15 +18,13 @@ class ListaProdutosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         configuraRecyclerView()
         configuraFab()
-        val db = Room
-            .databaseBuilder(this, AppDatabase::class.java, "orgs.db")
-            .allowMainThreadQueries()
-            .build()
         setContentView(binding.root)
     }
 
     override fun onResume() {
         super.onResume()
+        val db = AppDatabase.getInstance(this)
+        val dao = db.produtoDao()
         adapter.atualiza(dao.buscarTodos())
     }
 
