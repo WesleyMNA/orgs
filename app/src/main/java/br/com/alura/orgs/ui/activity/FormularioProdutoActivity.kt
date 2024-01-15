@@ -11,10 +11,12 @@ import java.math.BigDecimal
 
 class FormularioProdutoActivity : AppCompatActivity() {
 
+    private lateinit var produto: Produto
     private var url: String? = null
     private val binding by lazy {
         ActivityFormularioProdutoBinding.inflate(layoutInflater)
     }
+    private var idProduto = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,15 @@ class FormularioProdutoActivity : AppCompatActivity() {
                 imagem.carregarImagem(url)
             }
         }
+        intent.getParcelableExtra<Produto>("produto")?.let { produtoCarregado ->
+            title = "Alterar produto"
+            idProduto = produtoCarregado.id
+            url = produtoCarregado.imagem
+            imagem.carregarImagem(produtoCarregado.imagem)
+            binding.activityFormularioProdutoNome.setText(produtoCarregado.nome)
+            binding.activityFormularioProdutoDescricao.setText(produtoCarregado.descricao)
+            binding.activityFormularioProdutoValor.setText(produtoCarregado.valor.toPlainString())
+        } ?: finish()
         setContentView(binding.root)
     }
 
@@ -36,7 +47,12 @@ class FormularioProdutoActivity : AppCompatActivity() {
         val dao = db.produtoDao()
         botaoSalvar.setOnClickListener {
             val produto = criarProduto()
-            dao.salva(produto)
+
+            if (idProduto == 0L)
+                dao.salva(produto)
+            else
+                dao.atualizar(produto)
+
             finish()
         }
     }
@@ -55,6 +71,7 @@ class FormularioProdutoActivity : AppCompatActivity() {
             BigDecimal(valorTexto)
 
         return Produto(
+            id = idProduto,
             nome = nome,
             descricao = descricao,
             valor = valor,
