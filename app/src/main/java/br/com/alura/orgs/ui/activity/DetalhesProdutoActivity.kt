@@ -15,7 +15,7 @@ import br.com.alura.orgs.models.Produto
 
 class DetalhesProdutoActivity : AppCompatActivity() {
 
-    private var produtoId: Long? = null
+    private var produtoId: Long = 0L
     private var produto: Produto? = null
     private val binding by lazy {
         ActivityDetalhesProdutoBinding.inflate(layoutInflater)
@@ -35,9 +35,7 @@ class DetalhesProdutoActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        produtoId?.let { id ->
-            produto = dao.buscaPorId(id)
-        }
+        produto = dao.buscaPorId(produtoId)
         produto?.let {
             preencheCampos(it)
         } ?: finish()
@@ -56,7 +54,7 @@ class DetalhesProdutoActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.menu_editar_produto -> {
                     Intent(this, FormularioProdutoActivity::class.java).apply {
-                        putExtra("produto", produto)
+                        putExtra("produtoId", produtoId)
                         startActivity(this)
                     }
                 }
@@ -70,10 +68,7 @@ class DetalhesProdutoActivity : AppCompatActivity() {
     }
 
     private fun tentaCarregarProduto() {
-        Log.i("ListaProdutosActivityDebug", "TESTE")
-        intent.getParcelableExtra<Produto>("produto")?.let { produtoCarregado ->
-            produtoId = produtoCarregado.id
-        } ?: finish()
+        produtoId = intent.getLongExtra("produtoId", 0L)
     }
 
     private fun preencheCampos(produtoCarregado: Produto) {

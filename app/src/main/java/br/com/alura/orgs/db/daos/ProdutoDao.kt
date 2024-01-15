@@ -3,6 +3,7 @@ package br.com.alura.orgs.db.daos
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import br.com.alura.orgs.models.Produto
@@ -16,7 +17,7 @@ interface ProdutoDao {
     @Query("SELECT * FROM Produto WHERE id = :id")
     fun buscaPorId(id: Long): Produto?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun salva(vararg produto: Produto)
 
     @Update
