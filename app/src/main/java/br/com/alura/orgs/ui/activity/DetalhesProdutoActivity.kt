@@ -15,9 +15,16 @@ import br.com.alura.orgs.models.Produto
 
 class DetalhesProdutoActivity : AppCompatActivity() {
 
-    private lateinit var produto: Produto
+    private var produtoId: Long? = null
+    private var produto: Produto? = null
     private val binding by lazy {
         ActivityDetalhesProdutoBinding.inflate(layoutInflater)
+    }
+    private val db by lazy {
+        AppDatabase.getInstance(this)
+    }
+    private val dao by lazy {
+        db.produtoDao()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,13 +33,23 @@ class DetalhesProdutoActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    override fun onResume() {
+        super.onResume()
+        produtoId?.let { id ->
+            produto = dao.buscaPorId(id)
+        }
+        produto?.let {
+            preencheCampos(it)
+        } ?: finish()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_detalhes_produto, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (::produto.isInitialized) {
+        if (produto != null) {
             val db = AppDatabase.getInstance(this)
             val dao = db.produtoDao()
 
@@ -44,7 +61,7 @@ class DetalhesProdutoActivity : AppCompatActivity() {
                     }
                 }
                 R.id.menu_remover_produto -> {
-                    dao.deletar(produto)
+                    produto?.let { dao.deletar(it) }
                     finish()
                 }
             }
@@ -55,8 +72,7 @@ class DetalhesProdutoActivity : AppCompatActivity() {
     private fun tentaCarregarProduto() {
         Log.i("ListaProdutosActivityDebug", "TESTE")
         intent.getParcelableExtra<Produto>("produto")?.let { produtoCarregado ->
-            produto = produtoCarregado
-            preencheCampos(produtoCarregado)
+            produtoId = produtoCarregado.id
         } ?: finish()
     }
 

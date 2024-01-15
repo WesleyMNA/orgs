@@ -13,6 +13,9 @@ interface ProdutoDao {
     @Query("SELECT * FROM Produto")
     fun buscarTodos() : List<Produto>
 
+    @Query("SELECT * FROM Produto WHERE id = :id")
+    fun buscaPorId(id: Long): Produto?
+
     @Insert
     fun salva(vararg produto: Produto)
 
@@ -21,4 +24,5 @@ interface ProdutoDao {
 
     @Delete
     fun deletar(produto: Produto)
+
 }
